@@ -7,7 +7,8 @@ const Navbar = () => {
 
   const handleLogout = () => {
     localStorage.removeItem('token');
-    navigate('/login');
+    // บังคับเปลี่ยนเส้นทางทันที
+    window.location.href = '/login';
   };
 
   return (

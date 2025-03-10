@@ -16,7 +16,9 @@ const Login = () => {
       const { data } = response;
       if (data && data.token) {
         localStorage.setItem('token', data.token);
-        navigate('/dashboard');
+        // เปลี่ยนเส้นทางทันทีและบังคับ render ใหม่
+        navigate('/dashboard', { replace: true });
+        window.location.reload(); // ใช้เป็นการแก้ชั่วคราว ถ้าปัญหายังอยู่
       } else {
         throw new Error('Login failed: Invalid response from server');
       }
