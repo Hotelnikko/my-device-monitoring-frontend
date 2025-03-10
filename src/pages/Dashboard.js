@@ -42,7 +42,7 @@ const Dashboard = () => {
 
     fetchInitialDevices();
 
-    const socket = io('http://localhost:5000', {
+    const socket = io('https://my-device-monitoring-backend.onrender.com', {
       query: { token: localStorage.getItem('token') },
     });
 
