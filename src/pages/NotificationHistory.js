@@ -53,7 +53,7 @@ const NotificationHistory = () => {
 
     if (window.confirm('Are you sure you want to clear all notification logs?')) {
       try {
-        await axios.delete('https://my-device-monitoring-backend.onrender.com/api/auth/notifications', {
+        await axios.delete('https://my-device-monitoring-backend.onrender.com/api/notifications', {
           headers: { 'x-auth-token': token },
         });
         setNotifications([]); // ล้างรายการใน state
