@@ -20,7 +20,7 @@ const ManageDevices = () => {
       }
 
       try {
-        const { data } = await axios.get('http://localhost:5000/api/devices', {
+        const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/api/devices`, {
           headers: { 'x-auth-token': token },
         });
         setDevices(data);
@@ -43,7 +43,7 @@ const ManageDevices = () => {
   const fetchDevices = async () => {
     const token = localStorage.getItem('token');
     try {
-      const { data } = await axios.get('http://localhost:5000/api/devices', {
+      const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/api/devices`, {
         headers: { 'x-auth-token': token },
       });
       setDevices(data);
@@ -56,7 +56,7 @@ const ManageDevices = () => {
     e.preventDefault();
     const token = localStorage.getItem('token');
     try {
-      await axios.post('http://localhost:5000/api/devices/add', { name, ip }, {
+      await axios.post(`${process.env.REACT_APP_API_URL}/api/devices/add`, { name, ip }, {
         headers: { 'x-auth-token': token },
       });
       setName('');
@@ -71,7 +71,7 @@ const ManageDevices = () => {
   const handleDelete = async (id) => {
     const token = localStorage.getItem('token');
     try {
-      await axios.delete(`http://localhost:5000/api/devices/${id}`, {
+      await axios.delete(`${process.env.REACT_APP_API_URL}/api/devices/${id}`, {
         headers: { 'x-auth-token': token },
       });
       fetchDevices();

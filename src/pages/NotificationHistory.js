@@ -19,7 +19,7 @@ const NotificationHistory = () => {
       }
 
       try {
-        let url = 'http://localhost:5000/api/notifications';
+        let url = `${process.env.REACT_APP_API_URL}/api/notifications`;
         if (filter !== 'all') {
           url += `?status=${filter}`;
         }
@@ -53,7 +53,7 @@ const NotificationHistory = () => {
 
     if (window.confirm('Are you sure you want to clear all notification logs?')) {
       try {
-        await axios.delete('http://localhost:5000/api/notifications', {
+        await axios.delete(`${process.env.REACT_APP_API_URL}/api/notifications`, {
           headers: { 'x-auth-token': token },
         });
         setNotifications([]); // ล้างรายการใน state

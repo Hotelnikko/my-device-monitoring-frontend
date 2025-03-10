@@ -23,7 +23,7 @@ const Dashboard = () => {
       }
 
       try {
-        const { data } = await axios.get('http://localhost:5000/api/devices', {
+        const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/api/devices`, {
           headers: { 'x-auth-token': token },
         });
         setDevices(data);
@@ -42,7 +42,7 @@ const Dashboard = () => {
 
     fetchInitialDevices();
 
-    const socket = io('http://localhost:5000', {
+    const socket = io('process.env.REACT_APP_API_URL', {
       query: { token: localStorage.getItem('token') },
     });
 
