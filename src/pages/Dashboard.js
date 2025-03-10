@@ -25,6 +25,7 @@ const Dashboard = () => {
       try {
         const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/api/devices`, {
           headers: { 'x-auth-token': token },
+          timeout: 30000,
         });
         setDevices(data);
       } catch (error) {
@@ -33,6 +34,9 @@ const Dashboard = () => {
           alert('Session expired. Please log in again.');
           localStorage.removeItem('token');
           navigate('/login');
+        } else if (error.code === 'ECONNABORTED') {
+          console.error('Request timeout:', error.message);
+          alert('Request timed out. Please try again later.');
         } else {
           console.error('Error fetching devices:', error.response ? error.response.data : error.message);
           alert('Failed to fetch devices. Please try again.');
@@ -42,7 +46,7 @@ const Dashboard = () => {
 
     fetchInitialDevices();
 
-    const socket = io('process.env.REACT_APP_API_URL', {
+    const socket = io(process.env.REACT_APP_API_URL, {
       query: { token: localStorage.getItem('token') },
     });
 
@@ -58,6 +62,8 @@ const Dashboard = () => {
         alert('Session expired. Please log in again.');
         localStorage.removeItem('token');
         navigate('/login');
+      } else {
+        alert('Failed to connect to the server. Please try again later.');
       }
     });
 
@@ -76,7 +82,7 @@ const Dashboard = () => {
     datasets: [
       {
         data: [onlineCount, offlineCount],
-        backgroundColor: ['#10B981', '#EF4444'], // สีเขียวอ่อนสำหรับออนไลน์, แดงสำหรับออฟไลน์
+        backgroundColor: ['#10B981', '#EF4444'],
         hoverOffset: 4,
       },
     ],
@@ -89,7 +95,7 @@ const Dashboard = () => {
       legend: {
         position: 'top',
         labels: {
-          color: '#1F2937', // สีข้อความใน legend
+          color: '#1F2937',
           font: {
             size: 14,
           },
@@ -98,7 +104,7 @@ const Dashboard = () => {
       title: {
         display: true,
         text: 'Device Status Overview',
-        color: '#1F2937', // สีชื่อกราฟ
+        color: '#1F2937',
         font: {
           size: 18,
           weight: 'bold',

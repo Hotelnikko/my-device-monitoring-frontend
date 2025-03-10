@@ -25,6 +25,7 @@ const NotificationHistory = () => {
         }
         const { data } = await axios.get(url, {
           headers: { 'x-auth-token': token },
+          timeout: 30000,
         });
         setNotifications(data);
       } catch (error) {
@@ -33,6 +34,9 @@ const NotificationHistory = () => {
           alert('Session expired. Please log in again.');
           localStorage.removeItem('token');
           navigate('/login');
+        } else if (error.code === 'ECONNABORTED') {
+          console.error('Request timeout:', error.message);
+          alert('Request timed out. Please try again later.');
         } else {
           console.error('Error fetching notifications:', error.response ? error.response.data : error.message);
           alert('Failed to fetch notifications. Please try again.');
@@ -55,8 +59,9 @@ const NotificationHistory = () => {
       try {
         await axios.delete(`${process.env.REACT_APP_API_URL}/api/notifications`, {
           headers: { 'x-auth-token': token },
+          timeout: 30000,
         });
-        setNotifications([]); // ล้างรายการใน state
+        setNotifications([]);
         alert('Notification logs cleared successfully');
       } catch (error) {
         console.error('Error clearing notifications:', error.response ? error.response.data : error.message);

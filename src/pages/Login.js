@@ -10,7 +10,9 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/auth/login`, { username, password });
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/auth/login`, { username, password }, {
+        timeout: 30000,
+      });
       const { data } = response;
       if (data && data.token) {
         localStorage.setItem('token', data.token);
@@ -21,7 +23,9 @@ const Login = () => {
     } catch (error) {
       let errorMessage = 'An error occurred. Please try again.';
       if (error.response) {
-        errorMessage = error.response.data.msg || 'Server error';
+        errorMessage = error.response.data.msg || `Server error (Status: ${error.response.status})`;
+      } else if (error.code === 'ECONNABORTED') {
+        errorMessage = 'Request timed out. Please try again later.';
       } else if (error.request) {
         errorMessage = 'Network error. Please check your connection.';
       } else {

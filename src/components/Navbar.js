@@ -2,6 +2,7 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
+  const token = localStorage.getItem('token');
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -10,25 +11,22 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-gray-800 p-4 shadow-lg">
+    <nav className="bg-blue-600 text-white p-4 shadow-lg">
       <div className="container mx-auto flex justify-between items-center">
-        <div className="space-x-6">
-          <Link to="/dashboard" className="text-white text-lg font-medium hover:text-blue-300 transition-colors duration-200">
-            Dashboard
-          </Link>
-          <Link to="/manage-devices" className="text-white text-lg font-medium hover:text-blue-300 transition-colors duration-200">
-            Manage Devices
-          </Link>
-          <Link to="/notification-history" className="text-white text-lg font-medium hover:text-blue-300 transition-colors duration-200">
-            Notification History
-          </Link>
-        </div>
-        <button
-          onClick={handleLogout}
-          className="p-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors duration-200"
-        >
-          Logout
-        </button>
+        <Link to="/" className="text-xl font-bold">Device Monitoring</Link>
+        {token ? (
+          <div className="space-x-4">
+            <Link to="/dashboard" className="hover:underline">Dashboard</Link>
+            <Link to="/manage-devices" className="hover:underline">Manage Devices</Link>
+            <Link to="/notifications" className="hover:underline">Notifications</Link>
+            <button onClick={handleLogout} className="hover:underline">Logout</button>
+          </div>
+        ) : (
+          <div className="space-x-4">
+            <Link to="/login" className="hover:underline">Login</Link>
+            <Link to="/register" className="hover:underline">Register</Link>
+          </div>
+        )}
       </div>
     </nav>
   );

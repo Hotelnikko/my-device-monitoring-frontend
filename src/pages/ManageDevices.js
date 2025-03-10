@@ -22,6 +22,7 @@ const ManageDevices = () => {
       try {
         const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/api/devices`, {
           headers: { 'x-auth-token': token },
+          timeout: 30000,
         });
         setDevices(data);
       } catch (error) {
@@ -30,6 +31,9 @@ const ManageDevices = () => {
           alert('Session expired. Please log in again.');
           localStorage.removeItem('token');
           navigate('/login');
+        } else if (error.code === 'ECONNABORTED') {
+          console.error('Request timeout:', error.message);
+          alert('Request timed out. Please try again later.');
         } else {
           console.error('Error fetching devices:', error.response ? error.response.data : error.message);
           alert('Failed to fetch devices. Please try again.');
@@ -45,6 +49,7 @@ const ManageDevices = () => {
     try {
       const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/api/devices`, {
         headers: { 'x-auth-token': token },
+        timeout: 30000,
       });
       setDevices(data);
     } catch (error) {
@@ -58,6 +63,7 @@ const ManageDevices = () => {
     try {
       await axios.post(`${process.env.REACT_APP_API_URL}/api/devices/add`, { name, ip }, {
         headers: { 'x-auth-token': token },
+        timeout: 30000,
       });
       setName('');
       setIp('');
@@ -73,6 +79,7 @@ const ManageDevices = () => {
     try {
       await axios.delete(`${process.env.REACT_APP_API_URL}/api/devices/${id}`, {
         headers: { 'x-auth-token': token },
+        timeout: 30000,
       });
       fetchDevices();
     } catch (error) {
