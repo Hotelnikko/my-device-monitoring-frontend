@@ -56,7 +56,7 @@ const ManageDevices = () => {
     e.preventDefault();
     const token = localStorage.getItem('token');
     try {
-      await axios.post('https://my-device-monitoring-backend.onrender.com/api/devices/add', { name, ip }, {
+      await axios.post('http://localhost:5000/api/devices/add', { name, ip }, {
         headers: { 'x-auth-token': token },
       });
       setName('');

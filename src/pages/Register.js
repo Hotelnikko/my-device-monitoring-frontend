@@ -10,7 +10,7 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('https://my-device-monitoring-backend.onrender.com/api/register', { username, password });
+      const response = await axios.post('http://localhost:5000/api/auth/register', { username, password });
       const { data } = response;
       if (data && data.token) {
         localStorage.setItem('token', data.token);
